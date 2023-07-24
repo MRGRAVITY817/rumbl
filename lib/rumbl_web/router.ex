@@ -1,5 +1,4 @@
 defmodule RumblWeb.Router do
-  alias RumblWeb.UserController
   use RumblWeb, :router
 
   pipeline :browser do
@@ -18,8 +17,7 @@ defmodule RumblWeb.Router do
   scope "/", RumblWeb do
     pipe_through :browser
 
-    get "/users", UserController, :index
-    get "/users:id", UserController, :show
+    live "/users", UsersLive
     get "/", PageController, :home
   end
 
