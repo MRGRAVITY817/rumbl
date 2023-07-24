@@ -18,6 +18,7 @@ defmodule RumblWeb.Router do
     pipe_through :browser
 
     live "/users", UsersLive
+    live "/users/new", UsersNewLive
     live "/users/:id", UsersLive
     get "/", PageController, :home
   end
