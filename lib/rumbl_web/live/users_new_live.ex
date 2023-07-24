@@ -13,9 +13,13 @@ defmodule RumblWeb.UsersNewLive do
   end
 
   def handle_event("create_user", %{"user" => user_params}, socket) do
-    {:ok, user} = Accounts.create_user(user_params)
-    info = "#{user.name} created!"
+    case Accounts.create_user(user_params) do
+      {:ok, user} ->
+        info = "#{user.name} created!"
+        {:noreply, socket |> put_flash(:info, info) |> redirect(to: ~p"/users")}
 
-    {:noreply, socket |> put_flash(:info, info) |> redirect(to: ~p"/users")}
+      {:error, %Ecto.Changeset{} = changeset} ->
+        {:noreply, assign(socket, form: to_form(changeset, as: "user"))}
+    end
   end
 end
