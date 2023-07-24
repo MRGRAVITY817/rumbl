@@ -4,7 +4,7 @@ defmodule RumblWeb.UsersNewLive do
   use RumblWeb, :live_view
 
   def mount(_params, _session, socket) do
-    changeset = Accounts.change_user(%User{})
+    changeset = Accounts.change_registration(%User{}, %{})
     form = to_form(changeset, as: "user")
 
     socket = assign(socket, form: form)
@@ -13,7 +13,7 @@ defmodule RumblWeb.UsersNewLive do
   end
 
   def handle_event("create_user", %{"user" => user_params}, socket) do
-    case Accounts.create_user(user_params) do
+    case Accounts.register_user(user_params) do
       {:ok, user} ->
         info = "#{user.name} created!"
         {:noreply, socket |> put_flash(:info, info) |> redirect(to: ~p"/users")}

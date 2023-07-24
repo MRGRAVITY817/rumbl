@@ -7,6 +7,9 @@
   <div>
     <.input field={@form[:username]} placeholder="Username" />
   </div>
+  <div>
+    <.input field={@form[:password]} placeholder="Password" />
+  </div>
   <:actions>
     <.button phx-disable-with="Creating user..." class="w-full">
       Create User
