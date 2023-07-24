@@ -1,0 +1,15 @@
+<h1 class="text-3xl font-bold">Welcome, newcomer.</h1>
+
+<.simple_form for={@form} phx-submit="change_user">
+  <div>
+    <.input field={@form[:name]} placeholder="Name" />
+  </div>
+  <div>
+    <.input field={@form[:username]} placeholder="Username" />
+  </div>
+  <:actions>
+    <.button phx-disable-with="Creating user..." class="w-full">
+      Create User
+    </.button>
+  </:actions>
+</.simple_form>
