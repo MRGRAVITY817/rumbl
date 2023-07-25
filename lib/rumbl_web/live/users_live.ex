@@ -8,13 +8,12 @@ defmodule RumblWeb.UsersLive do
     socket =
       assign(socket, users: users, selected_user: nil)
 
-    # should return this tuple
     {:ok, socket}
   end
 
   # handle /users/:id
   def handle_params(%{"id" => id}, _uri, socket) do
-    user = Accounts.get_user(id)
+    user = Accounts.get_user!(id)
 
     {:noreply, assign(socket, selected_user: user)}
   end
@@ -35,7 +34,7 @@ defmodule RumblWeb.UsersLive do
           <tr>
             <td>
               <.link href={~p"/users/#{user.id}"}>
-                <b><%= first_name(user) %></b> (<%= user.id %>)
+                <b><%= user.email %></b> (<%= user.id %>)
               </.link>
             </td>
           </tr>
@@ -52,14 +51,8 @@ defmodule RumblWeb.UsersLive do
     ~H"""
     <h1 class="text-xl mb-4">Showing User</h1>
     <p>
-      <b><%= first_name(@user) %></b> (<%= @user.id %>)
+      <b><%= @user.email %></b> (<%= @user.id %>)
     </p>
     """
-  end
-
-  defp first_name(%Accounts.User{name: name}) do
-    name
-    |> String.split(" ")
-    |> Enum.at(0)
   end
 end
