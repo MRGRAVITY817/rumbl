@@ -7,14 +7,17 @@
   </:actions>
 </.header>
 
-<.table
-  id="videos"
-  rows={@streams.videos}
-  row_click={fn {_id, video} -> JS.navigate(~p"/videos/#{video}") end}
->
-  <:col :let={{_id, video}} label="Url"><%= video.url %></:col>
-  <:col :let={{_id, video}} label="Title"><%= video.title %></:col>
-  <:col :let={{_id, video}} label="Description"><%= video.description %></:col>
+<.table id="videos" rows={@streams.videos} row_click={fn {_id, video} -> JS.navigate(~p"/videos/#{video}") end}
+  >
+  <:col :let={{_id, video}} label="Url">
+    <%= video.url %>
+  </:col>
+  <:col :let={{_id, video}} label="Title">
+    <%= video.title %>
+  </:col>
+  <:col :let={{_id, video}} label="Description">
+    <%= video.description %>
+  </:col>
   <:action :let={{_id, video}}>
     <div class="sr-only">
       <.link navigate={~p"/videos/#{video}"}>Show</.link>
@@ -22,22 +25,15 @@
     <.link patch={~p"/videos/#{video}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, video}}>
-    <.link
-      phx-click={JS.push("delete", value: %{id: video.id}) |> hide("##{id}")}
+    <.link phx-click={JS.push("delete", value: %{id: video.id}) |> hide("##{id}")}
       data-confirm="Are you sure?"
-    >
+      >
       Delete
     </.link>
   </:action>
 </.table>
 
 <.modal :if={@live_action in [:new, :edit]} id="video-modal" show on_cancel={JS.patch(~p"/videos")}>
-  <.live_component
-    module={RumblWeb.VideoLive.FormComponent}
-    id={@video.id || :new}
-    title={@page_title}
-    action={@live_action}
-    video={@video}
-    patch={~p"/videos"}
-  />
+  <.live_component module={RumblWeb.VideoLive.FormComponent} id={@video.id || :new} title={@page_title}
+    action={@live_action} video={@video} user_token={@user_token} patch={~p"/videos"} />
 </.modal>

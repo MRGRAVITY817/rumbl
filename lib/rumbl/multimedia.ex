@@ -4,6 +4,7 @@ defmodule Rumbl.Multimedia do
   """
 
   import Ecto.Query, warn: false
+  alias Rumbl.Accounts
   alias Rumbl.Repo
 
   alias Rumbl.Multimedia.Video
@@ -38,20 +39,12 @@ defmodule Rumbl.Multimedia do
   def get_video!(id), do: Repo.get!(Video, id)
 
   @doc """
-  Creates a video.
-
-  ## Examples
-
-      iex> create_video(%{field: value})
-      {:ok, %Video{}}
-
-      iex> create_video(%{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
+  Creates a video per user.
   """
-  def create_video(attrs \\ %{}) do
+  def create_video(%Accounts.User{} = user, attrs \\ %{}) do
     %Video{}
     |> Video.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:user, user)
     |> Repo.insert()
   end
 

@@ -1,6 +1,6 @@
 defmodule RumblWeb.VideoLive.FormComponent do
+  alias Rumbl.Accounts
   use RumblWeb, :live_component
-
   alias Rumbl.Multimedia
 
   @impl true
@@ -70,7 +70,9 @@ defmodule RumblWeb.VideoLive.FormComponent do
   end
 
   defp save_video(socket, :new, video_params) do
-    case Multimedia.create_video(video_params) do
+    user = Accounts.get_user_by_session_token(socket.assigns.user_token)
+
+    case Multimedia.create_video(user, video_params) do
       {:ok, video} ->
         notify_parent({:saved, video})
 

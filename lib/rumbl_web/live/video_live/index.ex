@@ -1,12 +1,21 @@
 defmodule RumblWeb.VideoLive.Index do
+  alias Rumbl.Accounts
   use RumblWeb, :live_view
 
   alias Rumbl.Multimedia
   alias Rumbl.Multimedia.Video
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, stream(socket, :videos, Multimedia.list_videos())}
+  def mount(_params, session, socket) do
+    user_token =
+      session["user_token"]
+
+    socket =
+      socket
+      |> assign(:user_token, user_token)
+      |> stream(:videos, Multimedia.list_videos())
+
+    {:ok, socket}
   end
 
   @impl true
